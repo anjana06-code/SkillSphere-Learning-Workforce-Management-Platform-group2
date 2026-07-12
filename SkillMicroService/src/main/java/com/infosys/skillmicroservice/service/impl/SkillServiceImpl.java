@@ -1,8 +1,8 @@
 package com.infosys.skillmicroservice.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infosys.skillmicroservice.entity.Skill;
@@ -12,8 +12,11 @@ import com.infosys.skillmicroservice.service.SkillService;
 @Service
 public class SkillServiceImpl implements SkillService {
 
-    @Autowired
-    private SkillRepository skillRepository;
+    private final SkillRepository skillRepository;
+
+    public SkillServiceImpl(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
 
     @Override
     public Skill addSkill(Skill skill) {
@@ -26,18 +29,29 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill getSkillById(Long skillId) {
-        return skillRepository.findById(skillId).orElse(null);
+    public Skill getSkillById(UUID skillId) {
+        return skillRepository.findById(skillId)
+                .orElseThrow(() ->
+                        new RuntimeException("Skill not found with ID: " + skillId));
     }
 
     @Override
-    public Skill updateSkill(Long skillId, Skill skill) {
-        skill.setSkillId(skillId);
-        return skillRepository.save(skill);
+    public Skill updateSkill(UUID skillId, Skill newSkill) {
+
+        Skill existingSkill = getSkillById(skillId);
+
+        existingSkill.setSkillName(newSkill.getSkillName());
+        existingSkill.setCategory(newSkill.getCategory());
+        existingSkill.setDescription(newSkill.getDescription());
+
+        return skillRepository.save(existingSkill);
     }
 
     @Override
-    public void deleteSkill(Long skillId) {
-        skillRepository.deleteById(skillId);
+    public void deleteSkill(UUID skillId) {
+
+        Skill existingSkill = getSkillById(skillId);
+
+        skillRepository.delete(existingSkill);
     }
 }

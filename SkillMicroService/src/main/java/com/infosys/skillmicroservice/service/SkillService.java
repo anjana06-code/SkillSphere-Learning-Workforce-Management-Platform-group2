@@ -1,6 +1,7 @@
 package com.infosys.skillmicroservice.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.infosys.skillmicroservice.entity.Skill;
 
@@ -10,10 +11,10 @@ public interface SkillService {
 
     List<Skill> getAllSkills();
 
-    Skill getSkillById(Long skillId);
+    Skill getSkillById(UUID skillId);
 
-    Skill updateSkill(Long skillId, Skill skill);
+    Skill updateSkill(UUID skillId, Skill skill);
 
-    void deleteSkill(Long skillId);
+    void deleteSkill(UUID skillId);
 
 }

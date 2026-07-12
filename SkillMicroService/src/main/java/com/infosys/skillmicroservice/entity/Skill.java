@@ -1,44 +1,43 @@
 package com.infosys.skillmicroservice.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "skills")
 public class Skill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long skillId;
+    @GeneratedValue
+    private UUID skillId;
 
-    private Long employeeId;
-
+    @NotBlank(message = "Skill name is required")
     private String skillName;
 
-    private String skillLevel;
+    @NotNull(message = "Skill category is required")
+    @Enumerated(EnumType.STRING)
+    private SkillCategory category;
 
-    private Integer experience;
+    @NotBlank(message = "Description is required")
+    private String description;
 
     public Skill() {
     }
 
-    public Long getSkillId() {
+    public UUID getSkillId() {
         return skillId;
     }
 
-    public void setSkillId(Long skillId) {
+    public void setSkillId(UUID skillId) {
         this.skillId = skillId;
-    }
-
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
     }
 
     public String getSkillName() {
@@ -49,19 +48,19 @@ public class Skill {
         this.skillName = skillName;
     }
 
-    public String getSkillLevel() {
-        return skillLevel;
+    public SkillCategory getCategory() {
+        return category;
     }
 
-    public void setSkillLevel(String skillLevel) {
-        this.skillLevel = skillLevel;
+    public void setCategory(SkillCategory category) {
+        this.category = category;
     }
 
-    public Integer getExperience() {
-        return experience;
+    public String getDescription() {
+        return description;
     }
 
-    public void setExperience(Integer experience) {
-        this.experience = experience;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
